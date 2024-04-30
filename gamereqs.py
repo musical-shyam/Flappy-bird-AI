@@ -1,7 +1,9 @@
 # will contain Bird, Pipe, Ground, Background, Score classes
+# Bird Class = Player Class || Contains AI related data
+
 import pygame
 import random
-import brain # temp name for the neural network/genetic algorithm import
+import brain # temp name for the genetic algorithm import
 
 WINDOW_WIDTH = 550
 WINDOW_HEIGHT = 550
@@ -18,6 +20,8 @@ class Ground:
     def draw(self, window):
         pygame.draw.rect(window, (92, 58, 8), self.rect)
 
+ground = Ground(WINDOW_WIDTH)
+pipes = []
 
 class Pipes:
     width = 15
@@ -45,12 +49,9 @@ class Pipes:
         if self.x <= -self.width:
             self.off_screen = True
 
-ground = Ground(WINDOW_WIDTH)
-pipes = []
-
 class Player:
     def __init__(self):
-        # Bird
+        # Player settings (the bird)
         self.x, self.y = 50, 200
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
         self.color = random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)
@@ -59,7 +60,7 @@ class Player:
         self.alive = True
         self.lifespan = 0
 
-        # AI
+        # AI settings
         self.decision = None
         self.vision = [0.5, 1, 0.5]
         self.fitness = 0
@@ -67,7 +68,9 @@ class Player:
         self.brain = brain.Brain(self.inputs)
         self.brain.generate_net()
 
+
     # Game related functions
+
     def draw(self, window):
         pygame.draw.rect(window, self.color, self.rect)
 
@@ -89,6 +92,7 @@ class Player:
             self.rect.y += self.vel
             if self.vel > 5:
                 self.vel = 5
+            
             # Increment lifespan
             self.lifespan += 1
         else:
@@ -109,33 +113,32 @@ class Player:
             if not p.passed:
                 return p
 
+
     # AI related functions
+
+    # The AI "looks" to where the pipe position is relative to its own position
     def look(self):
         if pipes:
-
-            # Line to top pipe
+            # Vision to top pipe
             self.vision[0] = max(0, self.rect.center[1] - self.closest_pipe().top_rect.bottom) / 500
-            #pygame.draw.line(window, self.color, self.rect.center,
-            #                (self.rect.center[0], pipes[0].top_rect.bottom))
 
-            # Line to mid pipe
+            # Vision to mid pipe
             self.vision[1] = max(0, self.closest_pipe().x - self.rect.center[0]) / 500
-            #pygame.draw.line(window, self.color, self.rect.center,
-            #                 (pipes[0].x, self.rect.center[1]))
 
-            # Line to bottom pipe
+            # Vision to bottom pipe
             self.vision[2] = max(0, self.closest_pipe().bottom_rect.top - self.rect.center[1]) / 500
-            #pygame.draw.line(window, self.color, self.rect.center,
-            #                 (self.rect.center[0], pipes[0].bottom_rect.top))
 
+    # The AI uses the position data percieved to determine whether to flap (jump) or not
     def think(self):
         self.decision = self.brain.feed_forward(self.vision)
         if self.decision > 0.73:
             self.bird_flap()
 
+    # The time in which the bird lives correlates to how fit its genes are for future generations
     def calculate_fitness(self):
         self.fitness = self.lifespan
 
+    # Make a complete copy of the bird's AI settings for children creation
     def clone(self):
         clone = Player()
         clone.fitness = self.fitness
