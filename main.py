@@ -41,9 +41,13 @@ def main():
         gen_count_label = font.render("Generation: " + str(generationCount),1,(0,0,0))
         gamereqs.window.blit(gen_count_label, (10, 510))
 
+        # Score output
         score_label = font.render("Score: " + str(score), 1, (0,0,0)) # Creates a label for the score
         gamereqs.window.blit(score_label, (430, 510)) # Displays the score on the window
 
+        alive_players = population.get_alive_players() # Gets the alive players from the population
+        gamereqs.window.blit(score_label, (230, 510)) # Displays the score on the window
+        
         for i in gamereqs.pipes:
             i.draw(gamereqs.window) # Draws the pipe on the window
             i.update() # Updates the pipe's position
@@ -61,7 +65,7 @@ def main():
             score = 0
     
 
-        clock.tick(60) # Sets the frame rate to 60 frames per second
+        clock.tick(120) # Sets the frame rate to 60 frames per second (increases speed of the game)
         pygame.display.flip() # Updates the display 
 
 main() # Calls the main function to start the game
