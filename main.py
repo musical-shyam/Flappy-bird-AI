@@ -19,6 +19,7 @@ def quit_game(): # Quits the game properly if the user closes the window
             exit()
 def main():
     generationCount = 0
+    score = 0
     pipes_spawn_time = 10 # Time between each pipe spawn
     while True:
         # Checks if the user has closed the window
@@ -40,19 +41,25 @@ def main():
         gen_count_label = font.render("Generation: " + str(generationCount),1,(0,0,0))
         gamereqs.window.blit(gen_count_label, (10, 510))
 
+        score_label = font.render("Score: " + str(score), 1, (0,0,0)) # Creates a label for the score
+        gamereqs.window.blit(score_label, (430, 510)) # Displays the score on the window
 
         for i in gamereqs.pipes:
             i.draw(gamereqs.window) # Draws the pipe on the window
             i.update() # Updates the pipe's position
             if i.off_screen: # Removes the pipe from the list if it is off the window
                 gamereqs.pipes.remove(i)
+                score += 1
                 
         if not population.extinct(): # Checks if the population is extinct
             population.update_live_players() # Updates the live players
         else:
+            print("Generation: " + str(generationCount) + " Score: " + str(score)) # Outputs the generation and score to the console
             gamereqs.pipes.clear()
             population.natural_selection() # Starts the natural selection process
             generationCount += 1
+            score = 0
+    
 
         clock.tick(60) # Sets the frame rate to 60 frames per second
         pygame.display.flip() # Updates the display 
