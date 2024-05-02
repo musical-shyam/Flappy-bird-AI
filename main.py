@@ -43,10 +43,10 @@ def main():
 
         # Score output
         score_label = font.render("Score: " + str(score), 1, (0,0,0)) # Creates a label for the score
-        gamereqs.window.blit(score_label, (430, 510)) # Displays the score on the window
+        gamereqs.window.blit(score_label, (410, 510)) # Displays the score on the window
 
-        alive_players = population.get_alive_players() # Gets the alive players from the population
-        gamereqs.window.blit(score_label, (230, 510)) # Displays the score on the window
+        # alive_players = population.get_alive_players() # Gets the alive players from the population
+        # gamereqs.window.blit(score_label, (230, 510)) # Displays the score on the window
         
         for i in gamereqs.pipes:
             i.draw(gamereqs.window) # Draws the pipe on the window
