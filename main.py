@@ -12,7 +12,7 @@ clock = pygame.time.Clock() # Creates a clock object to control the frame rate
 population = population.Population(100) # Creates a population of 100 players
 font = pygame.font.Font('Roboto-Regular.ttf', 30)
 
-table  = PrettyTable(['Generation', 'Score', 'Number of Species', 'Best Species Fitness', 'Best Player Fitness'])
+table  = PrettyTable(['Generation', 'Score', 'Number of Species', 'Best Species Fitness', 'Best Bird Fitness'])
 
 def generate_pipes(): # Adds a new pipe to the list of pipes depending on the window width
     gamereqs.pipes.append(gamereqs.Pipes(gamereqs.WINDOW_WIDTH))
@@ -64,7 +64,7 @@ def main():
         if not population.extinct(): # Checks if the population is extinct
             population.update_live_players() # Updates the live players
         else:
-            print("Generation: " + str(generationCount) + " Score: " + str(score)) # Outputs the generation and score to the console
+            print("Generation " + str(generationCount) + " Score: " + str(score)) # Outputs the generation and score to the console
             gamereqs.pipes.clear()
             population.natural_selection() # Starts the natural selection process
             table.add_row([generationCount, score, len(population.species), population.best_species_fitness, population.best_player_fitness])

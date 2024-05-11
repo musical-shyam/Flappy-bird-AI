@@ -93,6 +93,7 @@ class Population:
     # Function sorts all players in a species by fitness
     # then, sports all species within population by average fitness
     def sort_species_by_fitness(self):
+        self.best_player_fitness = 0
         for s in self.species:
             s.sort_players_by_fitness()
             if s.benchmark_fitness > self.best_player_fitness:
@@ -123,6 +124,7 @@ class Population:
         for child in children:
             self.players.append(child)
         self.generation += 1
+        
 
     # Return true if all players are dead
     def extinct(self):

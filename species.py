@@ -21,10 +21,8 @@ class Species:
     @staticmethod
     def weight_difference(brain_1, brain_2):
         total_weight_difference = 0
-        for i in range(0, len(brain_1.connections)):
-            for j in range(0, len(brain_2.connections)):
-                if i == j:
-                    total_weight_difference += abs(brain_1.connections[i].weight - brain_2.connections[j].weight)
+        for i in range(0, len(brain_1.connections)): # Compares the weights of the connections of the two brains(assuming they have the same number of connections)
+            total_weight_difference += abs(brain_1.connections[i].weight - brain_2.connections[i].weight)
         return total_weight_difference
 
     # Adds the specimen to the species of the passed in player
