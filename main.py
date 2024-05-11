@@ -3,11 +3,16 @@ import os
 from sys import exit
 import gamereqs
 import population
+from prettytable import PrettyTable # in built moduel to create tables
 
+# Pygame setup
+os.environ['SDL_VIDEO_CENTERED'] = '1' # Centers the window
 pygame.init() # Initializes Pygame(set up the display, etc.)
 clock = pygame.time.Clock() # Creates a clock object to control the frame rate
 population = population.Population(100) # Creates a population of 100 players
 font = pygame.font.Font('Roboto-Regular.ttf', 30)
+
+table  = PrettyTable(['Generation', 'Score', 'Number of Species', 'Best Species Fitness', 'Best Player Fitness'])
 
 def generate_pipes(): # Adds a new pipe to the list of pipes depending on the window width
     gamereqs.pipes.append(gamereqs.Pipes(gamereqs.WINDOW_WIDTH))
@@ -15,6 +20,7 @@ def generate_pipes(): # Adds a new pipe to the list of pipes depending on the wi
 def quit_game(): # Quits the game properly if the user closes the window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            print(table)
             pygame.quit()
             exit()
 def main():
@@ -61,6 +67,7 @@ def main():
             print("Generation: " + str(generationCount) + " Score: " + str(score)) # Outputs the generation and score to the console
             gamereqs.pipes.clear()
             population.natural_selection() # Starts the natural selection process
+            table.add_row([generationCount, score, len(population.species), population.best_species_fitness, population.best_player_fitness])
             generationCount += 1
             score = 0
     

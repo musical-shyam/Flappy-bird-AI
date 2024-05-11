@@ -7,7 +7,7 @@ class Species:
         self.average_fitness = 0
         self.threshold = 1.2
         self.players.append(player)
-        self.benchmark_fitness = player.fitness
+        self.benchmark_fitness = player.fitness # Fitness of the best player in the species
         self.benchmark_brain = player.brain.clone()
         self.champion = player.clone()
         self.staleness = 0
@@ -46,6 +46,7 @@ class Species:
             total_fitness += p.fitness
         if self.players:
             self.average_fitness = int(total_fitness / len(self.players))
+
         else:
             self.average_fitness = 0
 

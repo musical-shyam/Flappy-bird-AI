@@ -11,7 +11,8 @@ class Population:
         self.size = size
         for i in range(0, self.size, 1):
             self.players.append(gamereqs.Player())
-
+        self.best_species_fitness = 0
+        self.best_player_fitness = 0
     def update_live_players(self):
         for p in self.players:
             if p.alive:
@@ -22,24 +23,24 @@ class Population:
 
     # Function begins a natural selection cycle, calling all genome culling methods
     def natural_selection(self):
-        print("NEW NATURAL SELECTION CYCLE: ")
+        #print("NEW NATURAL SELECTION CYCLE: ")
 
-        print('func call: SPECIATE')
+        #print('func call: SPECIATE')
         self.speciate()
 
-        print('func call: CALCULATE FITNESS')
+        #print('func call: CALCULATE FITNESS')
         self.calculate_fitness()
 
-        print('func call: KILL EXTINCT')
+        #print('func call: KILL EXTINCT')
         self.kill_extinct_species()
 
-        print('func call: KILL STALE')
+        #print('func call: KILL STALE')
         self.kill_stale_species()
 
-        print('func call: SORT BY FITNESS')
+        #print('func call: SORT BY FITNESS')
         self.sort_species_by_fitness()
 
-        print('func call: CHILDREN FOR NEXT GEN')
+        #print('func call: CHILDREN FOR NEXT GEN')
         self.next_gen()
 
     # Function splits the population into different species.
@@ -94,8 +95,12 @@ class Population:
     def sort_species_by_fitness(self):
         for s in self.species:
             s.sort_players_by_fitness()
+            if s.benchmark_fitness > self.best_player_fitness:
+                self.best_player_fitness = s.benchmark_fitness
 
         self.species.sort(key=operator.attrgetter('benchmark_fitness'), reverse=True)
+        self.best_species_fitness = self.species[0].average_fitness
+        
 
     # Children are created through mutations in weights of neural network connections
     def next_gen(self):
