@@ -5,3 +5,5 @@
 To install necessary libraries: `pip install -r requirements.txt` <br />
 
 To run the program: `python main.py` or `python3 main.py` <br />
+
+<br /> If there is an issue, try clearing `__pycache__` <br />
